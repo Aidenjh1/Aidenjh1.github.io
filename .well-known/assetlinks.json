@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.github.aidenjh1.o2vibe",
+      "sha256_cert_fingerprints": ["CD:82:FD:23:D1:D5:68:E7:B6:54:22:F6:2B:D5:32:FC:8D:5B:C8:06:90:7E:67:C1:14:7F:DB:28:9A:FD:D4:38"]
+    }
+  }
+]
