@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Gematria & Isopsephy — Genesis 1:1 and John 1:1</title>
+<style>
+  :root {
+    --parchment: #f4ecd8;
+    --parchment-dark: #e8dcc0;
+    --ink: #2c2416;
+    --ink-soft: #5a4a32;
+    --accent: #8b4513;
+    --accent-soft: #a0522d;
+    --gold: #b8860b;
+    --gold-light: #daa520;
+    --highlight: #fff3a0;
+    --highlight-strong: #f0c040;
+    --card: #fffaf0;
+    --border: #c4a574;
+    --shadow: rgba(44, 36, 22, 0.12);
+    --hebrew: "SBL Hebrew", "Ezra SIL", "Times New Roman", "David", "Arial Hebrew", serif;
+    --greek: "SBL Greek", "Gentium", "Times New Roman", "Palatino Linotype", serif;
+    --body: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: var(--body);
+    background:
+      radial-gradient(ellipse at 20% 0%, #faf3e0 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 100%, #ebe0c8 0%, transparent 45%),
+      var(--parchment);
+    color: var(--ink);
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+  .wrap {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 1.5rem 1.25rem 4rem;
+  }
+  header.hero {
+    text-align: center;
+    padding: 2rem 1rem 1.5rem;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  header.hero::before,
+  header.hero::after {
+    content: "✦";
+    color: var(--gold);
+    position: absolute;
+    top: 1.25rem;
+    font-size: 0.9rem;
+  }
+  header.hero::before { left: 1rem; }
+  header.hero::after { right: 1rem; }
+  h1 {
+    font-size: clamp(1.5rem, 4vw, 2.15rem);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    margin: 0 0 0.5rem;
+    color: var(--accent);
+  }
+  .subtitle {
+    color: var(--ink-soft);
+    font-style: italic;
+    font-size: 1.05rem;
+    margin: 0;
+  }
+  nav.toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin: 1.25rem 0 0;
+  }
+  nav.toc a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 0.35rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card);
+    transition: background 0.15s, border-color 0.15s;
+  }
+  nav.toc a:hover {
+    background: var(--highlight);
+    border-color: var(--gold);
+  }
+  section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 10px var(--shadow);
+  }
+  h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1.45rem;
+    color: var(--accent);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.4rem;
+  }
+  h3 {
+    margin: 1.4rem 0 0.6rem;
+    font-size: 1.15rem;
+    color: var(--accent-soft);
+  }
+  p { margin: 0.6rem 0; }
+  .verse-display {
+    font-size: clamp(1.35rem, 3.5vw, 1.85rem);
+    text-align: center;
+    padding: 1rem;
+    background: var(--parchment-dark);
+    border-radius: 8px;
+    margin: 1rem 0;
+    line-height: 1.9;
+    border: 1px dashed var(--border);
+  }
+  .verse-display.he { font-family: var(--hebrew); direction: rtl; }
+  .verse-display.el { font-family: var(--greek); }
+  .translit {
+    text-align: center;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    margin-top: -0.4rem;
+  }
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    align-items: center;
+    margin: 1rem 0;
+    padding: 0.75rem;
+    background: var(--parchment);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .controls label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .seg {
+    display: inline-flex;
+    flex-wrap: wrap;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .seg button {
+    border: none;
+    background: var(--card);
+    color: var(--ink);
+    padding: 0.4rem 0.7rem;
+    font-family: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border-right: 1px solid var(--border);
+  }
+  .seg button:last-child { border-right: none; }
+  .seg button.active {
+    background: var(--accent);
+    color: #fffaf0;
+  }
+  .seg button:hover:not(.active) { background: var(--highlight); }
+  .letter {
+    display: inline-block;
+    cursor: pointer;
+    padding: 0.05em 0.12em;
+    margin: 0 0.02em;
+    border-radius: 4px;
+    transition: background 0.12s, transform 0.12s;
+    user-select: none;
+  }
+  .letter:hover { background: rgba(218, 165, 32, 0.35); }
+  .letter.selected {
+    background: var(--highlight-strong);
+    transform: translateY(-1px);
+    box-shadow: 0 1px 3px var(--shadow);
+  }
+  .letter-chip {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 2.4rem;
+    padding: 0.35rem 0.3rem;
+    margin: 0.2rem;
+    background: var(--parchment);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s, transform 0.12s;
+  }
+  .letter-chip:hover, .letter-chip.selected {
+    background: var(--highlight);
+    border-color: var(--gold);
+    transform: translateY(-2px);
+  }
+  .letter-chip .glyph {
+    font-size: 1.45rem;
+    line-height: 1.2;
+  }
+  .letter-chip.he .glyph { font-family: var(--hebrew); }
+  .letter-chip.el .glyph { font-family: var(--greek); }
+  .letter-chip .val {
+    font-size: 0.72rem;
+    color: var(--accent);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .letter-chip .name {
+    font-size: 0.62rem;
+    color: var(--ink-soft);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.75rem 0 1rem;
+    font-size: 0.95rem;
+  }
+  th, td {
+    border: 1px solid var(--border);
+    padding: 0.45rem 0.6rem;
+    text-align: left;
+  }
+  th {
+    background: var(--parchment-dark);
+    color: var(--accent);
+    font-weight: 700;
+  }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.he { font-family: var(--hebrew); font-size: 1.15rem; direction: rtl; text-align: right; }
+  td.el { font-family: var(--greek); font-size: 1.1rem; }
+  tr.total-row {
+    background: var(--parchment-dark);
+    font-weight: 700;
+  }
+  tr.total-row td { color: var(--accent); }
+  .calc-panel {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: 1fr;
+    margin-top: 1rem;
+  }
+  @media (min-width: 640px) {
+    .calc-panel { grid-template-columns: 1fr 1fr; }
+  }
+  .calc-box {
+    background: var(--parchment);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.9rem;
+  }
+  .calc-box h4 {
+    margin: 0 0 0.5rem;
+    font-size: 0.95rem;
+    color: var(--accent);
+  }
+  .running {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .running-detail {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    min-height: 1.3em;
+    word-break: break-word;
+  }
+  button.clear-btn, button.action-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    padding: 0.35rem 0.7rem;
+    border-radius: 5px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  button.clear-btn:hover, button.action-btn:hover {
+    background: var(--highlight);
+  }
+  .note {
+    background: #f7edd4;
+    border-left: 3px solid var(--gold);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.95rem;
+  }
+  .disclaimer {
+    background: #efe6d2;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.15rem;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+  .disclaimer strong { color: var(--ink); }
+  ul.sources {
+    padding-left: 1.2rem;
+  }
+  ul.sources li { margin: 0.35rem 0; }
+  footer {
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+  }
+  .eq {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+  .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #fffaf0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    vertical-align: middle;
+    margin-left: 0.35rem;
+  }
+  .word-block {
+    margin: 1rem 0;
+    padding: 0.85rem;
+    background: var(--parchment);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .word-block .word-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+    align-items: baseline;
+    margin-bottom: 0.5rem;
+  }
+  .word-block .word-he {
+    font-family: var(--hebrew);
+    font-size: 1.5rem;
+    direction: rtl;
+  }
+  .word-block .word-el {
+    font-family: var(--greek);
+    font-size: 1.4rem;
+  }
+  .word-block .word-meta {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+  .word-block .word-sum {
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 1.05rem;
+  }
+  .chips { display: flex; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1>Gematria & Isopsephy</h1>
+    <p class="subtitle">Genesis 1:1 · John 1:1 · Numerical patterns in the opening of Scripture</p>
+    <nav class="toc" aria-label="Sections">
+      <a href="#genesis">Genesis 1:1</a>
+      <a href="#els">ELS & 2701</a>
+      <a href="#john">John 1:1</a>
+      <a href="#cross">Connections</a>
+      <a href="#calculator">Calculator</a>
+      <a href="#sources">Sources</a>
+      <a href="#disclaimer">Disclaimer</a>
+    </nav>
+  </header>
+
+  <!-- GENESIS -->
+  <section id="genesis">
+    <h2>Genesis 1:1 <span class="badge">Hebrew · Gematria</span></h2>
+    <p>The first verse of the Hebrew Bible. In the Masoretic text:</p>
+    <div class="verse-display he" id="gen-verse" aria-label="Genesis 1:1 in Hebrew"></div>
+    <p class="translit">Bereshit bara Elohim et hashamayim ve’et ha’aretz<br />
+      “In the beginning God created the heavens and the earth.”</p>
+
+    <div class="controls">
+      <label for="heb-system">Gematria system:</label>
+      <div class="seg" role="group" aria-label="Hebrew gematria system" id="heb-system">
+        <button type="button" data-system="standard" class="active">Standard (mispar gadol)</button>
+        <button type="button" data-system="ordinal">Ordinal</button>
+        <button type="button" data-system="reduced">Reduced (mispar katan)</button>
+      </div>
+    </div>
+
+    <p>Click any letter below to add it to the running calculator. Selected letters highlight in gold.</p>
+    <div id="gen-words"></div>
+
+    <h3>Word totals</h3>
+    <div style="overflow-x:auto">
+      <table id="gen-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Hebrew</th>
+            <th>Meaning</th>
+            <th>Letters</th>
+            <th class="num">Value</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot></tfoot>
+      </table>
+    </div>
+    <p class="eq">Standard (mispar gadol) total: <strong>913 + 203 + 86 + 401 + 395 + 407 + 296 = 2701</strong></p>
+  </section>
+
+  <!-- ELS -->
+  <section id="els">
+    <h2>Famous patterns around Genesis 1:1</h2>
+    <h3>Equidistant letter spacing (ELS)</h3>
+    <p>In the continuous Hebrew letters of Genesis (spaces ignored), several well-known equidistant letter patterns have been discussed in popular and traditional literature:</p>
+    <div class="note">
+      <strong>תורה (Torah)</strong> — Taking every 49th letter (or related skip patterns in the opening of Genesis / the Torah) has been cited in popular ELS literature as spelling “Torah.” A related observation places the letters of Torah at intervals beginning near the start of Genesis. Exact skip counts vary by edition and by how final forms and spaces are counted; treat published diagrams as interpretive claims, not as a single standardized manuscript fact.
+    </div>
+    <div class="note">
+      <strong>יהוה (YHWH)</strong> — Similar ELS searches have reported the Tetragrammaton and related divine-name patterns in Genesis. Again, these depend on counting rules and are contested as statistical artifacts by critics.
+    </div>
+
+    <h3>2701 as a triangular number</h3>
+    <p>The standard gematria of Genesis 1:1 is <strong>2701</strong>. That number is the <strong>73rd triangular number</strong>:</p>
+    <p class="eq" style="text-align:center;font-size:1.15rem;">
+      T<sub>73</sub> = 73 × 74 ÷ 2 = <strong>2701</strong>
+    </p>
+    <p>The number <strong>73</strong> is itself the gematria of <span style="font-family:var(--hebrew);font-size:1.2rem;">חכמה</span> (<em>chokmah</em>, “wisdom”): ח=8, כ=20, מ=40, ה=5 → <strong>73</strong>.</p>
+    <p>Readers in the gematria tradition have linked this to Proverbs 3:19 — “The Lord by wisdom founded the earth” — seeing the opening verse of creation as numerically tied to wisdom.</p>
+    <p>Other noted factors of 2701 include 37 × 73. The number 37 appears often in related isopsephy discussions of New Testament Greek as well.</p>
+  </section>
+
+  <!-- JOHN -->
+  <section id="john">
+    <h2>John 1:1 <span class="badge">Greek · Isopsephy</span></h2>
+    <p>The opening of the Gospel of John, in Greek (without diacritics for calculation):</p>
+    <div class="verse-display el" id="john-verse" aria-label="John 1:1 in Greek"></div>
+    <p class="translit">En archē ēn ho logos, kai ho logos ēn pros ton theon, kai theos ēn ho logos<br />
+      “In the beginning was the Word, and the Word was with God, and the Word was God.”</p>
+
+    <div class="controls">
+      <label>Greek letter values:</label>
+      <div class="seg" role="group" aria-label="Greek system">
+        <button type="button" class="active" disabled title="Standard Greek isopsephy is used throughout">Standard isopsephy (α=1 … ω=800)</button>
+      </div>
+    </div>
+
+    <p>Click letters to add them to the calculator. Values use classical Greek isopsephy (also called Greek gematria).</p>
+    <div id="john-words"></div>
+
+    <h3>Word totals</h3>
+    <div style="overflow-x:auto">
+      <table id="john-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Greek</th>
+            <th>Meaning</th>
+            <th>Letters</th>
+            <th class="num">Value</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot></tfoot>
+      </table>
+    </div>
+    <p class="eq">Full verse total (this orthography): <strong id="john-total">3617</strong></p>
+    <p>The opening phrase alone, <em>Εν αρχη ην ο λογος</em> (“In the beginning was the Word”), sums to
+      <strong>55 + 709 + 58 + 70 + 373 = 1265</strong>.
+      Isopsephy studies (including work associated with Ivan Panin and later popular writers) have examined this phrase and related Johannine wording for numerical structure; published claims differ in scope and method.</p>
+
+    <h3>ΙΗΣΟΥΣ = 888</h3>
+    <p>A classic Christian isopsephy observation: the Greek name <strong>ΙΗΣΟΥΣ</strong> (Iēsous, “Jesus”) has letter values</p>
+    <p class="eq" style="text-align:center;">
+      Ι=10 · Η=8 · Σ=200 · Ο=70 · Υ=400 · Σ=200 → <strong>888</strong>
+    </p>
+    <p>Commentators have contrasted this with other figures sometimes cited in the same literature (for example, various proposed totals for rival or symbolic names). The number 888 is often read devotionally as a “super-seven” (one beyond completeness) or as a Christological counterpart to other triple-digit patterns. Treat such contrasts as traditional interpretation, not as historical proof.</p>
+  </section>
+
+  <!-- CROSS -->
+  <section id="cross">
+    <h2>Cross-verse connections</h2>
+    <ul>
+      <li><strong>Creation and the Word.</strong> Genesis 1:1 opens the Hebrew Bible with creation by God; John 1:1 opens the Fourth Gospel with the eternal Word who was with God and was God. The parallel “in the beginning” (בראשית / Εν αρχη) invites literary and theological comparison, of which gematria is only one layer.</li>
+      <li><strong>2701 and triangular form.</strong> Genesis 1:1 = 2701 = T<sub>73</sub>, with 73 = חכמה (wisdom), a link popularized in modern gematria writing and resonant with older rabbinic interest in Bereshit and wisdom.</li>
+      <li><strong>37 × 73.</strong> 2701 = 37 × 73. The factor 37 recurs in some New Testament isopsephy discussions (Panin and others), though methodology is disputed.</li>
+      <li><strong>888.</strong> The isopsephy of ΙΗΣΟΥΣ stands as a distinct New Testament observation often placed beside Hebrew patterns for Christological reflection.</li>
+    </ul>
+
+    <h3>Who has written on this?</h3>
+    <ul class="sources">
+      <li><strong>Rabbinic tradition</strong> — Midrash on Bereshit (e.g. Genesis Rabbah) explores the letters and words of Genesis 1:1 extensively (why the Torah begins with bet, the role of את, and more). Classical midrash is letter- and word-focused; modern-style ELS diagrams are a later, more contested development.</li>
+      <li><strong>E. W. Bullinger</strong> — <em>Number in Scripture</em> (1894) catalogs biblical number symbolism and some gematria, influential in English-speaking evangelical circles.</li>
+      <li><strong>Ivan Panin</strong> — Late 19th / early 20th-century work claiming elaborate numerical structure in Hebrew and Greek biblical texts (including Genesis and John). Widely popularized; also widely criticized for selective counting and post-hoc pattern finding.</li>
+      <li><strong>Modern ELS literature</strong> — Popular works on “Torah codes” (late 20th century) claimed equidistant encodings of “Torah,” names, and events; statistical critiques (e.g. McKay and others) argue many such patterns arise by chance under flexible search rules.</li>
+    </ul>
+  </section>
+
+  <!-- CALCULATOR -->
+  <section id="calculator">
+    <h2>Running calculator</h2>
+    <p>Click letters in the verse breakdowns above. They accumulate here. Switch the Hebrew system to recompute Hebrew selections.</p>
+    <div class="calc-panel">
+      <div class="calc-box">
+        <h4>Selected letters</h4>
+        <div class="running-detail" id="calc-detail">None yet — click a letter above.</div>
+        <p style="margin:0.6rem 0 0;">
+          <button type="button" class="clear-btn" id="calc-clear">Clear selection</button>
+        </p>
+      </div>
+      <div class="calc-box">
+        <h4>Running total</h4>
+        <div class="running" id="calc-total">0</div>
+        <div class="running-detail" id="calc-system-label">Using standard Hebrew / Greek values</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOURCES -->
+  <section id="sources">
+    <h2>Further reading (starting points)</h2>
+    <ul class="sources">
+      <li>Genesis Rabbah (Bereshit Rabbah) on Genesis 1:1 — classical midrashic commentary on the opening verse.</li>
+      <li>E. W. Bullinger, <em>Number in Scripture</em> (1894).</li>
+      <li>Ivan Panin, writings on biblical numerics (various pamphlets and editions).</li>
+      <li>Proverbs 3:19 and related wisdom texts for the theological “wisdom / creation” pairing.</li>
+      <li>For critical perspective on ELS: published statistical responses to Torah-code claims (1990s–2000s scholarly debate).</li>
+    </ul>
+  </section>
+
+  <section id="disclaimer" class="disclaimer">
+    <strong>Disclaimer.</strong> Gematria and isopsephy are traditional interpretive practices found in Jewish and Christian reading of Scripture. The numerical observations gathered here — including ELS patterns, triangular numbers, and name totals such as 888 — are matters of faith, devotion, and literary tradition. They are <em>not</em> empirical proof of authorship, inspiration, or historical events. Letter values depend on orthography (final forms, spelling variants, accents omitted in Greek). This page is offered for educational and devotional exploration.
+  </section>
+
+  <footer>
+    Self-contained educational page · Open locally in any browser · No external scripts or fonts required
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- Hebrew letter data ---------- */
+  const HEB_NAMES = {
+    'א':'Aleph','ב':'Bet','ג':'Gimel','ד':'Dalet','ה':'He','ו':'Vav','ז':'Zayin','ח':'Chet','ט':'Tet',
+    'י':'Yod','כ':'Kaf','ך':'Kaf (final)','ל':'Lamed','מ':'Mem','ם':'Mem (final)','נ':'Nun','ן':'Nun (final)',
+    'ס':'Samekh','ע':'Ayin','פ':'Pe','ף':'Pe (final)','צ':'Tsadi','ץ':'Tsadi (final)','ק':'Qof','ר':'Resh','ש':'Shin','ת':'Tav'
+  };
+  const HEB_STD = {
+    'א':1,'ב':2,'ג':3,'ד':4,'ה':5,'ו':6,'ז':7,'ח':8,'ט':9,
+    'י':10,'כ':20,'ך':20,'ל':30,'מ':40,'ם':40,'נ':50,'ן':50,
+    'ס':60,'ע':70,'פ':80,'ף':80,'צ':90,'ץ':90,'ק':100,'ר':200,'ש':300,'ת':400
+  };
+  const HEB_ORDINAL = {
+    'א':1,'ב':2,'ג':3,'ד':4,'ה':5,'ו':6,'ז':7,'ח':8,'ט':9,
+    'י':10,'כ':11,'ך':11,'ל':12,'מ':13,'ם':13,'נ':14,'ן':14,
+    'ס':15,'ע':16,'פ':17,'ף':17,'צ':18,'ץ':18,'ק':19,'ר':20,'ש':21,'ת':22
+  };
+  function hebReduced(ch) {
+    const v = HEB_STD[ch];
+    if (v == null) return 0;
+    return ((v - 1) % 9) + 1;
+  }
+  function hebValue(ch, system) {
+    if (system === 'ordinal') return HEB_ORDINAL[ch] || 0;
+    if (system === 'reduced') return hebReduced(ch);
+    return HEB_STD[ch] || 0;
+  }
+
+  const GEN_WORDS = [
+    { he: 'בראשית', meaning: 'In the beginning' },
+    { he: 'ברא', meaning: 'created' },
+    { he: 'אלהים', meaning: 'God' },
+    { he: 'את', meaning: 'direct object marker' },
+    { he: 'השמים', meaning: 'the heavens' },
+    { he: 'ואת', meaning: 'and (the)' },
+    { he: 'הארץ', meaning: 'the earth' }
+  ];
+
+  /* ---------- Greek letter data ---------- */
+  const GR_NAMES = {
+    'Α':'Alpha','α':'Alpha','Β':'Beta','β':'Beta','Γ':'Gamma','γ':'Gamma','Δ':'Delta','δ':'Delta',
+    'Ε':'Epsilon','ε':'Epsilon','Ζ':'Zeta','ζ':'Zeta','Η':'Eta','η':'Eta','Θ':'Theta','θ':'Theta',
+    'Ι':'Iota','ι':'Iota','Κ':'Kappa','κ':'Kappa','Λ':'Lambda','λ':'Lambda','Μ':'Mu','μ':'Mu',
+    'Ν':'Nu','ν':'Nu','Ξ':'Xi','ξ':'Xi','Ο':'Omicron','ο':'Omicron','Π':'Pi','π':'Pi',
+    'Ρ':'Rho','ρ':'Rho','Σ':'Sigma','σ':'Sigma','ς':'Sigma (final)','Τ':'Tau','τ':'Tau',
+    'Υ':'Upsilon','υ':'Upsilon','Φ':'Phi','φ':'Phi','Χ':'Chi','χ':'Chi','Ψ':'Psi','ψ':'Psi',
+    'Ω':'Omega','ω':'Omega'
+  };
+  const GR_VAL = {
+    'Α':1,'α':1,'Β':2,'β':2,'Γ':3,'γ':3,'Δ':4,'δ':4,'Ε':5,'ε':5,
+    'Ζ':7,'ζ':7,'Η':8,'η':8,'Θ':9,'θ':9,'Ι':10,'ι':10,'Κ':20,'κ':20,
+    'Λ':30,'λ':30,'Μ':40,'μ':40,'Ν':50,'ν':50,'Ξ':60,'ξ':60,'Ο':70,'ο':70,
+    'Π':80,'π':80,'Ρ':100,'ρ':100,'Σ':200,'σ':200,'ς':200,'Τ':300,'τ':300,
+    'Υ':400,'υ':400,'Φ':500,'φ':500,'Χ':600,'χ':600,'Ψ':700,'ψ':700,'Ω':800,'ω':800
+  };
+  function grValue(ch) { return GR_VAL[ch] || 0; }
+
+  const JOHN_WORDS = [
+    { el: 'Εν', meaning: 'In' },
+    { el: 'αρχη', meaning: 'beginning' },
+    { el: 'ην', meaning: 'was' },
+    { el: 'ο', meaning: 'the' },
+    { el: 'λογος', meaning: 'Word' },
+    { el: 'και', meaning: 'and' },
+    { el: 'ο', meaning: 'the' },
+    { el: 'λογος', meaning: 'Word' },
+    { el: 'ην', meaning: 'was' },
+    { el: 'προς', meaning: 'with / toward' },
+    { el: 'τον', meaning: 'the' },
+    { el: 'θεον', meaning: 'God (acc.)' },
+    { el: 'και', meaning: 'and' },
+    { el: 'θεος', meaning: 'God' },
+    { el: 'ην', meaning: 'was' },
+    { el: 'ο', meaning: 'the' },
+    { el: 'λογος', meaning: 'Word' }
+  ];
+
+  /* ---------- State ---------- */
+  let hebSystem = 'standard';
+  /** @type {{lang:'he'|'el', ch:string, id:string}[]} */
+  let selection = [];
+  let idCounter = 0;
+
+  /* ---------- Render Genesis ---------- */
+  function renderGenesis() {
+    const verseEl = document.getElementById('gen-verse');
+    const wordsEl = document.getElementById('gen-words');
+    const tbody = document.querySelector('#gen-table tbody');
+    const tfoot = document.querySelector('#gen-table tfoot');
+    wordsEl.innerHTML = '';
+    tbody.innerHTML = '';
+    tfoot.innerHTML = '';
+
+    let verseHtml = '';
+    let grand = 0;
+
+    GEN_WORDS.forEach(function (w, wi) {
+      const letters = Array.from(w.he);
+      const vals = letters.map(function (c) { return hebValue(c, hebSystem); });
+      const sum = vals.reduce(function (a, b) { return a + b; }, 0);
+      grand += sum;
+
+      verseHtml += letters.map(function (c, li) {
+        const sid = 'he-' + wi + '-' + li;
+        return '<span class="letter" data-lang="he" data-ch="' + c + '" data-sid="' + sid + '" title="' +
+          (HEB_NAMES[c] || '') + ' = ' + hebValue(c, hebSystem) + '">' + c + '</span>';
+      }).join('') + (wi < GEN_WORDS.length - 1 ? ' ' : '');
+
+      const block = document.createElement('div');
+      block.className = 'word-block';
+      block.innerHTML =
+        '<div class="word-head">' +
+          '<span class="word-he">' + w.he + '</span>' +
+          '<span class="word-sum">= ' + sum + '</span>' +
+        '</div>' +
+        '<div class="word-meta">' + w.meaning + '</div>' +
+        '<div class="chips"></div>';
+      const chips = block.querySelector('.chips');
+      letters.forEach(function (c, li) {
+        const sid = 'he-' + wi + '-' + li;
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'letter-chip he';
+        chip.dataset.lang = 'he';
+        chip.dataset.ch = c;
+        chip.dataset.sid = sid;
+        chip.innerHTML =
+          '<span class="glyph">' + c + '</span>' +
+          '<span class="val">' + hebValue(c, hebSystem) + '</span>' +
+          '<span class="name">' + (HEB_NAMES[c] || '') + '</span>';
+        chips.appendChild(chip);
+      });
+      wordsEl.appendChild(block);
+
+      const tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td>' + (wi + 1) + '</td>' +
+        '<td class="he">' + w.he + '</td>' +
+        '<td>' + w.meaning + '</td>' +
+        '<td>' + letters.map(function (c, i) {
+          return c + '=' + vals[i];
+        }).join(' · ') + '</td>' +
+        '<td class="num">' + sum + '</td>';
+      tbody.appendChild(tr);
+    });
+
+    verseEl.innerHTML = verseHtml;
+    tfoot.innerHTML =
+      '<tr class="total-row"><td colspan="4">Verse total (' + hebSystem + ')</td><td class="num">' + grand + '</td></tr>';
+
+    bindLetterClicks(verseEl);
+    bindLetterClicks(wordsEl);
+    syncSelectionHighlight();
+  }
+
+  /* ---------- Render John ---------- */
+  function renderJohn() {
+    const verseEl = document.getElementById('john-verse');
+    const wordsEl = document.getElementById('john-words');
+    const tbody = document.querySelector('#john-table tbody');
+    const tfoot = document.querySelector('#john-table tfoot');
+    wordsEl.innerHTML = '';
+    tbody.innerHTML = '';
+    tfoot.innerHTML = '';
+
+    let verseHtml = '';
+    let grand = 0;
+
+    JOHN_WORDS.forEach(function (w, wi) {
+      const letters = Array.from(w.el);
+      const vals = letters.map(grValue);
+      const sum = vals.reduce(function (a, b) { return a + b; }, 0);
+      grand += sum;
+
+      verseHtml += letters.map(function (c, li) {
+        const sid = 'el-' + wi + '-' + li;
+        return '<span class="letter" data-lang="el" data-ch="' + c + '" data-sid="' + sid + '" title="' +
+          (GR_NAMES[c] || '') + ' = ' + grValue(c) + '">' + c + '</span>';
+      }).join('') + (wi < JOHN_WORDS.length - 1 ? ' ' : '');
+
+      const block = document.createElement('div');
+      block.className = 'word-block';
+      block.innerHTML =
+        '<div class="word-head">' +
+          '<span class="word-el">' + w.el + '</span>' +
+          '<span class="word-sum">= ' + sum + '</span>' +
+        '</div>' +
+        '<div class="word-meta">' + w.meaning + '</div>' +
+        '<div class="chips"></div>';
+      const chips = block.querySelector('.chips');
+      letters.forEach(function (c, li) {
+        const sid = 'el-' + wi + '-' + li;
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'letter-chip el';
+        chip.dataset.lang = 'el';
+        chip.dataset.ch = c;
+        chip.dataset.sid = sid;
+        chip.innerHTML =
+          '<span class="glyph">' + c + '</span>' +
+          '<span class="val">' + grValue(c) + '</span>' +
+          '<span class="name">' + (GR_NAMES[c] || '') + '</span>';
+        chips.appendChild(chip);
+      });
+      wordsEl.appendChild(block);
+
+      const tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td>' + (wi + 1) + '</td>' +
+        '<td class="el">' + w.el + '</td>' +
+        '<td>' + w.meaning + '</td>' +
+        '<td>' + letters.map(function (c, i) {
+          return c + '=' + vals[i];
+        }).join(' · ') + '</td>' +
+        '<td class="num">' + sum + '</td>';
+      tbody.appendChild(tr);
+    });
+
+    verseEl.innerHTML = verseHtml;
+    document.getElementById('john-total').textContent = String(grand);
+    tfoot.innerHTML =
+      '<tr class="total-row"><td colspan="4">Verse total</td><td class="num">' + grand + '</td></tr>';
+
+    bindLetterClicks(verseEl);
+    bindLetterClicks(wordsEl);
+    syncSelectionHighlight();
+  }
+
+  /* ---------- Clicks & calculator ---------- */
+  function bindLetterClicks(root) {
+    root.querySelectorAll('[data-sid]').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        toggleLetter(el.dataset.lang, el.dataset.ch, el.dataset.sid);
+      });
+    });
+  }
+
+  function toggleLetter(lang, ch, sid) {
+    const idx = selection.findIndex(function (s) { return s.id === sid; });
+    if (idx >= 0) {
+      selection.splice(idx, 1);
+    } else {
+      selection.push({ lang: lang, ch: ch, id: sid });
+    }
+    updateCalc();
+    syncSelectionHighlight();
+  }
+
+  function letterValue(item) {
+    if (item.lang === 'he') return hebValue(item.ch, hebSystem);
+    return grValue(item.ch);
+  }
+
+  function updateCalc() {
+    const totalEl = document.getElementById('calc-total');
+    const detailEl = document.getElementById('calc-detail');
+    const labelEl = document.getElementById('calc-system-label');
+    if (!selection.length) {
+      totalEl.textContent = '0';
+      detailEl.textContent = 'None yet — click a letter above.';
+    } else {
+      let sum = 0;
+      const parts = selection.map(function (s) {
+        const v = letterValue(s);
+        sum += v;
+        const name = s.lang === 'he' ? (HEB_NAMES[s.ch] || s.ch) : (GR_NAMES[s.ch] || s.ch);
+        return s.ch + ' (' + name + ')=' + v;
+      });
+      totalEl.textContent = String(sum);
+      detailEl.textContent = parts.join(' + ');
+    }
+    const sysLabel = hebSystem === 'standard' ? 'standard (mispar gadol)'
+      : hebSystem === 'ordinal' ? 'ordinal' : 'reduced (mispar katan)';
+    labelEl.textContent = 'Hebrew letters use ' + sysLabel + '; Greek uses standard isopsephy';
+  }
+
+  function syncSelectionHighlight() {
+    const ids = {};
+    selection.forEach(function (s) { ids[s.id] = true; });
+    document.querySelectorAll('[data-sid]').forEach(function (el) {
+      if (ids[el.dataset.sid]) el.classList.add('selected');
+      else el.classList.remove('selected');
+    });
+  }
+
+  document.getElementById('calc-clear').addEventListener('click', function () {
+    selection = [];
+    updateCalc();
+    syncSelectionHighlight();
+  });
+
+  document.querySelectorAll('#heb-system button').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('#heb-system button').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      hebSystem = btn.dataset.system;
+      renderGenesis();
+      updateCalc();
+    });
+  });
+
+  renderGenesis();
+  renderJohn();
+  updateCalc();
+})();
+</script>
+</body>
+</html>
