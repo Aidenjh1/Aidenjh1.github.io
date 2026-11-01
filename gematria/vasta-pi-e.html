@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Joe Vasta Method — π in Genesis 1:1 and e in John 1:1</title>
+<style>
+  :root {
+    --bg: #f7f3ea;
+    --ink: #1f1a14;
+    --muted: #5c5348;
+    --gen: #1a5f4a;
+    --gen-soft: #d8efe6;
+    --gen-border: #2a8f6e;
+    --john: #3b4a8c;
+    --john-soft: #dde3f7;
+    --john-border: #5a6bb8;
+    --accent: #8a5a12;
+    --card: #fffdf8;
+    --line: #c9bfa8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Palatino Linotype", Palatino, Georgia, serif;
+    background: radial-gradient(ellipse at top, #fffaf0, var(--bg));
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
+  h1 { text-align: center; font-size: clamp(1.35rem, 3.5vw, 1.9rem); margin: 0.5rem 0; color: var(--accent); }
+  .sub { text-align: center; color: var(--muted); font-style: italic; margin: 0 0 1.25rem; }
+  .formula {
+    background: var(--card);
+    border: 2px solid var(--line);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+  .formula .label { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+  .formula .math {
+    font-size: clamp(1rem, 2.8vw, 1.35rem);
+    margin: 0.6rem 0;
+    font-variant-numeric: tabular-nums;
+  }
+  .formula .math .num { color: var(--gen); font-weight: 700; }
+  .formula .math .den { color: var(--john); font-weight: 700; }
+  .grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 900px) {
+    .grid { grid-template-columns: 1fr 1fr; }
+  }
+  .panel {
+    background: var(--card);
+    border-radius: 12px;
+    border: 2px solid;
+    padding: 1rem 1rem 1.25rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,.05);
+  }
+  .panel.gen { border-color: var(--gen-border); }
+  .panel.john { border-color: var(--john-border); }
+  .panel h2 {
+    margin: 0 0 0.35rem;
+    font-size: 1.2rem;
+  }
+  .panel.gen h2 { color: var(--gen); }
+  .panel.john h2 { color: var(--john); }
+  .verse {
+    font-size: 1.15rem;
+    padding: 0.65rem 0.75rem;
+    border-radius: 8px;
+    margin: 0.6rem 0;
+    text-align: center;
+    line-height: 1.8;
+  }
+  .panel.gen .verse { background: var(--gen-soft); direction: rtl; font-family: "Times New Roman", "SBL Hebrew", serif; }
+  .panel.john .verse { background: var(--john-soft); font-family: "Times New Roman", "SBL Greek", serif; }
+  .meta { font-size: 0.9rem; color: var(--muted); text-align: center; margin-bottom: 0.75rem; }
+  .flow { display: flex; flex-direction: column; gap: 0.35rem; align-items: stretch; }
+  .box {
+    border-radius: 8px;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid;
+    font-size: 0.92rem;
+  }
+  .panel.gen .box { border-color: var(--gen-border); background: #f3faf7; }
+  .panel.john .box { border-color: var(--john-border); background: #f4f6fc; }
+  .box strong { display: block; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.2rem; opacity: 0.85; }
+  .panel.gen .box strong { color: var(--gen); }
+  .panel.john .box strong { color: var(--john); }
+  .arrow {
+    text-align: center;
+    font-size: 1.35rem;
+    line-height: 1;
+    color: var(--muted);
+    user-select: none;
+  }
+  .result {
+    margin-top: 0.35rem;
+    padding: 0.85rem;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+  .panel.gen .result { background: var(--gen); color: #f4fff9; }
+  .panel.john .result { background: var(--john); color: #f4f6ff; }
+  .match {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-top: 0.35rem;
+    opacity: 0.95;
+  }
+  .tiny { font-size: 0.78rem; word-break: break-all; color: var(--muted); margin-top: 0.25rem; }
+  .words-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin: 0.5rem 0; }
+  .words-table th, .words-table td { border: 1px solid var(--line); padding: 0.25rem 0.35rem; }
+  .words-table th { background: #efe8d8; text-align: left; }
+  .words-table td.n { text-align: right; font-variant-numeric: tabular-nums; }
+  .he { direction: rtl; font-family: "Times New Roman", serif; }
+  .el { font-family: "Times New Roman", serif; }
+  .note {
+    margin-top: 1.25rem;
+    padding: 0.9rem 1rem;
+    background: #efe6d2;
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .note strong { color: var(--ink); }
+  svg.flow-svg { width: 100%; height: auto; display: block; margin: 0.5rem 0; }
+  .legend { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin: 0.5rem 0 1rem; font-size: 0.9rem; }
+  .legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
+  .swatch { width: 0.9rem; height: 0.9rem; border-radius: 3px; display: inline-block; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Joe Vasta’s Gematria Encoding Method</h1>
+  <p class="sub">How π is read from Genesis 1:1 (Hebrew) and e from John 1:1 (Greek)</p>
+
+  <div class="formula">
+    <div class="label">The formula</div>
+    <div class="math">
+      <span class="num">(letters × ∏ letter values)</span>
+      &nbsp;÷&nbsp;
+      <span class="den">(words × ∏ word values)</span>
+    </div>
+    <div style="font-size:0.9rem;color:var(--muted);">Then strip the power of ten and compare the leading digits to π or e.</div>
+  </div>
+
+  <div class="legend">
+    <span><i class="swatch" style="background:#1a5f4a"></i> Genesis 1:1 → π</span>
+    <span><i class="swatch" style="background:#3b4a8c"></i> John 1:1 → e</span>
+  </div>
+
+  <div class="grid">
+    <!-- GENESIS -->
+    <div class="panel gen">
+      <h2>Genesis 1:1 → π</h2>
+      <div class="verse">בראשית ברא אלהים את השמים ואת הארץ</div>
+      <div class="meta">7 words · 28 letters · Hebrew mispar gadol</div>
+
+      <svg class="flow-svg" viewBox="0 0 420 90" aria-hidden="true">
+        <defs>
+          <marker id="ag" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#1a5f4a"/></marker>
+        </defs>
+        <rect x="10" y="20" width="90" height="44" rx="6" fill="#d8efe6" stroke="#2a8f6e"/>
+        <text x="55" y="40" text-anchor="middle" font-size="11" fill="#1a5f4a" font-family="Georgia,serif">28 letters</text>
+        <text x="55" y="54" text-anchor="middle" font-size="10" fill="#1a5f4a" font-family="Georgia,serif">∏ = 2.389×10³⁴</text>
+        <line x1="100" y1="42" x2="130" y2="42" stroke="#1a5f4a" stroke-width="2" marker-end="url(#ag)"/>
+        <rect x="135" y="20" width="90" height="44" rx="6" fill="#d8efe6" stroke="#2a8f6e"/>
+        <text x="180" y="40" text-anchor="middle" font-size="11" fill="#1a5f4a" font-family="Georgia,serif">7 words</text>
+        <text x="180" y="54" text-anchor="middle" font-size="10" fill="#1a5f4a" font-family="Georgia,serif">∏ = 3.042×10¹⁷</text>
+        <line x1="225" y1="42" x2="255" y2="42" stroke="#1a5f4a" stroke-width="2" marker-end="url(#ag)"/>
+        <rect x="260" y="14" width="150" height="56" rx="6" fill="#1a5f4a"/>
+        <text x="335" y="38" text-anchor="middle" font-size="12" fill="#f4fff9" font-family="Georgia,serif" font-weight="700">÷ → 3.14155…×10¹⁷</text>
+        <text x="335" y="54" text-anchor="middle" font-size="11" fill="#d8efe6" font-family="Georgia,serif">leading digits ≈ π</text>
+      </svg>
+
+      <div class="flow">
+        <div class="box"><strong>1. Count</strong>Letters L = <b>28</b> &nbsp;·&nbsp; Words W = <b>7</b></div>
+        <div class="arrow">↓</div>
+        <div class="box"><strong>2. Letter values (product)</strong>
+          2×200×1×300×10×400 × 2×200×1 × 1×30×5×10×40 × 1×400 × 5×300×40×10×40 × 6×1×400 × 5×1×200×90
+          <div class="tiny">∏ letters = 23,887,872,000,000,000,000,000,000,000,000,000 = 2.3887872 × 10³⁴</div>
+        </div>
+        <div class="arrow">↓</div>
+        <div class="box"><strong>3. Word values (sums, then product)</strong>
+          <table class="words-table">
+            <tr><th>Word</th><th>Letters</th><th class="n">Sum</th></tr>
+            <tr><td class="he">בראשית</td><td>2+200+1+300+10+400</td><td class="n">913</td></tr>
+            <tr><td class="he">ברא</td><td>2+200+1</td><td class="n">203</td></tr>
+            <tr><td class="he">אלהים</td><td>1+30+5+10+40</td><td class="n">86</td></tr>
+            <tr><td class="he">את</td><td>1+400</td><td class="n">401</td></tr>
+            <tr><td class="he">השמים</td><td>5+300+40+10+40</td><td class="n">395</td></tr>
+            <tr><td class="he">ואת</td><td>6+1+400</td><td class="n">407</td></tr>
+            <tr><td class="he">הארץ</td><td>5+1+200+90</td><td class="n">296</td></tr>
+          </table>
+          <div class="tiny">∏ words = 913×203×86×401×395×407×296 = 304,153,525,784,175,760</div>
+        </div>
+        <div class="arrow">↓</div>
+        <div class="box"><strong>4. Apply the formula</strong>
+          (28 × ∏letters) ÷ (7 × ∏words)
+          <div class="tiny">= 668,860,416… ÷ 2,129,074,680,489,230,320</div>
+        </div>
+        <div class="arrow">↓</div>
+        <div class="result">
+          ≈ 3.141554508 × 10¹⁷
+          <span class="match">Exponent stripped → <b>3.14155…</b> &nbsp;|&nbsp; π = 3.14159… &nbsp;(abs. error < 0.00004)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- JOHN -->
+    <div class="panel john">
+      <h2>John 1:1 → e</h2>
+      <div class="verse">Εν αρχηι ην ο λογος και ο λογος ην προς τον θεον και θεος ην ο λογος</div>
+      <div class="meta">17 words · 52 letters · Greek isopsephy<br />(Vasta spelling: <b>αρχηι</b> with iota)</div>
+
+      <svg class="flow-svg" viewBox="0 0 420 90" aria-hidden="true">
+        <defs>
+          <marker id="aj" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#3b4a8c"/></marker>
+        </defs>
+        <rect x="10" y="20" width="90" height="44" rx="6" fill="#dde3f7" stroke="#5a6bb8"/>
+        <text x="55" y="40" text-anchor="middle" font-size="11" fill="#3b4a8c" font-family="Georgia,serif">52 letters</text>
+        <text x="55" y="54" text-anchor="middle" font-size="10" fill="#3b4a8c" font-family="Georgia,serif">∏ letters</text>
+        <line x1="100" y1="42" x2="130" y2="42" stroke="#3b4a8c" stroke-width="2" marker-end="url(#aj)"/>
+        <rect x="135" y="20" width="90" height="44" rx="6" fill="#dde3f7" stroke="#5a6bb8"/>
+        <text x="180" y="40" text-anchor="middle" font-size="11" fill="#3b4a8c" font-family="Georgia,serif">17 words</text>
+        <text x="180" y="54" text-anchor="middle" font-size="10" fill="#3b4a8c" font-family="Georgia,serif">∏ words</text>
+        <line x1="225" y1="42" x2="255" y2="42" stroke="#3b4a8c" stroke-width="2" marker-end="url(#aj)"/>
+        <rect x="260" y="14" width="150" height="56" rx="6" fill="#3b4a8c"/>
+        <text x="335" y="38" text-anchor="middle" font-size="12" fill="#f4f6ff" font-family="Georgia,serif" font-weight="700">÷ → 2.71831…×10⁴⁰</text>
+        <text x="335" y="54" text-anchor="middle" font-size="11" fill="#dde3f7" font-family="Georgia,serif">leading digits ≈ e</text>
+      </svg>
+
+      <div class="flow">
+        <div class="box"><strong>1. Count</strong>Letters L = <b>52</b> &nbsp;·&nbsp; Words W = <b>17</b></div>
+        <div class="arrow">↓</div>
+        <div class="box"><strong>2. Letter values (product)</strong>
+          Product of all 52 Greek letter values (α=1 … ω=800; σ/ς=200)
+          <div class="tiny">∏ letters = 8.436251456… × 10⁷²</div>
+        </div>
+        <div class="arrow">↓</div>
+        <div class="box"><strong>3. Word values (sums, then product)</strong>
+          <table class="words-table">
+            <tr><th>Word</th><th>Sum</th><th>Word</th><th>Sum</th></tr>
+            <tr><td class="el">Εν</td><td class="n">55</td><td class="el">αρχηι</td><td class="n">719</td></tr>
+            <tr><td class="el">ην</td><td class="n">58</td><td class="el">ο</td><td class="n">70</td></tr>
+            <tr><td class="el">λογος</td><td class="n">373</td><td class="el">και</td><td class="n">31</td></tr>
+            <tr><td class="el">ο</td><td class="n">70</td><td class="el">λογος</td><td class="n">373</td></tr>
+            <tr><td class="el">ην</td><td class="n">58</td><td class="el">προς</td><td class="n">450</td></tr>
+            <tr><td class="el">τον</td><td class="n">420</td><td class="el">θεον</td><td class="n">134</td></tr>
+            <tr><td class="el">και</td><td class="n">31</td><td class="el">θεος</td><td class="n">284</td></tr>
+            <tr><td class="el">ην</td><td class="n">58</td><td class="el">ο</td><td class="n">70</td></tr>
+            <tr><td class="el">λογος</td><td class="n">373</td><td></td><td></td></tr>
+          </table>
+          <div class="tiny">Note: αρχηι = α(1)+ρ(100)+χ(600)+η(8)+ι(10) = 719 (iota subscript written as ι)</div>
+        </div>
+        <div class="arrow">↓</div>
+        <div class="box"><strong>4. Apply the same formula</strong>
+          (52 × ∏letters) ÷ (17 × ∏words)
+        </div>
+        <div class="arrow">↓</div>
+        <div class="result">
+          ≈ 2.718312812 × 10⁴⁰
+          <span class="match">Exponent stripped → <b>2.71831…</b> &nbsp;|&nbsp; e = 2.71828… &nbsp;(abs. error < 0.00004)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>How to read the result.</strong> The formula produces a huge number. Vasta compares only the <em>significand</em> (leading digits) after writing it in scientific notation, ignoring the ×10ⁿ factor. Genesis yields ≈3.14155×10¹⁷ (π ≈ 3.14159); John yields ≈2.71831×10⁴⁰ (e ≈ 2.71828). The Greek text uses Vasta’s orthography with <b>αρχηι</b> (52 letters); without that iota the match to e does not appear.
+    <br /><br />
+    <strong>Disclaimer.</strong> This diagram explains a traditional / popular numerological claim (Joe Vasta and related writers). The choice of formula, spelling, and discarding the exponent are interpretive. It is presented for educational illustration, not as empirical proof.
+  </div>
+</div>
+</body>
+</html>
